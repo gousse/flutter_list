@@ -100,8 +100,18 @@ class _MyHomePageState extends State<MyHomePage> {
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 3),
             itemBuilder: (BuildContext context, int index) {
-              return Card(
-                  child: Center(child: Text(maListeCourse[index].element)));
+              return InkWell(
+                child: Card(
+                    color: maListeCourse[index].bought
+                        ? Colors.lightGreen
+                        : Colors.blue,
+                    child: Center(child: Text(maListeCourse[index].element))),
+                onTap: () {
+                  setState(() {
+                    maListeCourse[index].update();
+                  });
+                },
+              );
             },
             itemCount: maListeCourse.length)
 
