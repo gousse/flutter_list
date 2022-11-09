@@ -30,6 +30,13 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  @override
+  initState() {
+    super.initState();
+
+    maListeCourse = listeCourses();
+  }
+
   List<String> courses = [
     "choux",
     "patates",
@@ -55,6 +62,13 @@ class _MyHomePageState extends State<MyHomePage> {
   ];
 
   List<Course> maListeCourse = [];
+  List<Course> listeCourses() {
+    List<Course> c = [];
+    for (var elment in courses) {
+      c.add(Course(elment));
+    }
+    return c;
+  }
 
   List<Widget> itemCourses() {
     List<Widget> items = [];
@@ -78,10 +92,6 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    for (var element in courses) {
-      maListeCourse.add(Course(element));
-    }
-
     return Scaffold(
         appBar: AppBar(
           title: Text(widget.title),
