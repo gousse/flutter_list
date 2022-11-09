@@ -106,6 +106,13 @@ class _MyHomePageState extends State<MyHomePage> {
                     maListeCourse.removeAt(index);
                   });
                 },
+                background: Container(
+                  child: Row(
+                    mainAxisSize: MainAxisSize.max,
+                    children: [Spacer(), Text("swipe to delete")],
+                  ),
+                  color: Colors.red,
+                ),
               );
             },
             separatorBuilder: (BuildContext context, int index) {
