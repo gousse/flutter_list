@@ -92,60 +92,71 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final orientation = MediaQuery.of(context).orientation;
+    print(orientation);
+
     return Scaffold(
         appBar: AppBar(
           title: Text(widget.title),
         ),
-        body: GridView.builder(
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 3),
-            itemBuilder: (BuildContext context, int index) {
-              return InkWell(
-                child: Card(
-                    color: maListeCourse[index].bought
-                        ? Colors.lightGreen
-                        : Colors.blue,
-                    child: Center(child: Text(maListeCourse[index].element))),
-                onTap: () {
-                  setState(() {
-                    maListeCourse[index].update();
-                  });
-                },
-              );
-            },
-            itemCount: maListeCourse.length)
+        body: (orientation == Orientation.portrait) ? listSeparated() : grid());
+  }
 
-        /*ListView.separated(
-            itemBuilder: (BuildContext context, index) {
-              return Dismissible(
-                key: Key(maListeCourse[index].element),
-                child: tile(index),
-                onDismissed: (direction) {
-                  setState(() {
-                    maListeCourse.removeAt(index);
-                  });
-                },
-                background: Container(
-                  child: Row(
-                    mainAxisSize: MainAxisSize.max,
-                    children: [Spacer(), Text("swipe to delete")],
-                  ),
-                  color: Colors.red,
-                ),
-              );
+  listSeparated() {
+    return ListView.separated(
+        itemBuilder: (BuildContext context, int index) {
+          return Dismissible(
+            key: Key(maListeCourse[index].element),
+            onDismissed: (direction) {
+              setState(() {
+                maListeCourse.removeAt(index);
+              });
             },
-            separatorBuilder: (BuildContext context, int index) {
-              return const Divider();
+            background: Container(
+              child: Row(
+                mainAxisSize: MainAxisSize.max,
+                children: [Spacer(), Text("Swipe to delete")],
+              ),
+              color: Colors.redAccent,
+            ),
+            child: tile(index),
+          );
+        },
+        separatorBuilder: (context, index) {
+          return const Divider(
+            color: Colors.indigoAccent,
+            thickness: 1,
+          );
+        },
+        itemCount: maListeCourse.length);
+  }
+
+  simpleList() {
+    return ListView.builder(itemBuilder: (context, index) {
+      final element = courses[index];
+      return elementToShow(element);
+    });
+  }
+
+  grid() {
+    return GridView.builder(
+        gridDelegate:
+            const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3),
+        itemBuilder: (BuildContext context, int index) {
+          return InkWell(
+            child: Card(
+                color: maListeCourse[index].bought
+                    ? Colors.lightGreen
+                    : Colors.blue,
+                child: Center(child: Text(maListeCourse[index].element))),
+            onTap: () {
+              setState(() {
+                maListeCourse[index].update();
+              });
             },
-            itemCount: maListeCourse.length)
-        // ListView.builder(
-        //     itemCount: courses.length,
-        //     itemBuilder: (BuildContext context, int index) {
-        //       var element = courses[index];
-        //       return elementToShow(element);
-        //     })
-        */
-        );
+          );
+        },
+        itemCount: maListeCourse.length);
   }
 
   ListTile tile(int index) {
@@ -156,7 +167,6 @@ class _MyHomePageState extends State<MyHomePage> {
           ? Icons.check_box
           : Icons.check_box_outline_blank),
       onTap: () {
-        print("tap on element $index : ${courses[index]}");
         setState(() {
           maListeCourse[index].update();
         });
