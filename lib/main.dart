@@ -15,7 +15,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const MyHomePage(title: 'Demo list'),
+      home: const MyHomePage(title: 'Demo grid'),
     );
   }
 }
@@ -96,7 +96,16 @@ class _MyHomePageState extends State<MyHomePage> {
         appBar: AppBar(
           title: Text(widget.title),
         ),
-        body: ListView.separated(
+        body: GridView.builder(
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 3),
+            itemBuilder: (BuildContext context, int index) {
+              return Card(
+                  child: Center(child: Text(maListeCourse[index].element)));
+            },
+            itemCount: maListeCourse.length)
+
+        /*ListView.separated(
             itemBuilder: (BuildContext context, index) {
               return Dismissible(
                 key: Key(maListeCourse[index].element),
@@ -125,6 +134,7 @@ class _MyHomePageState extends State<MyHomePage> {
         //       var element = courses[index];
         //       return elementToShow(element);
         //     })
+        */
         );
   }
 
